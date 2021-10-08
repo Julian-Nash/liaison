@@ -14,6 +14,7 @@ class Field:
             default: Optional[Any] = None,
             choices: Optional[Sequence] = None,
             validator: Optional[Callable] = None,
+            strict_type: Optional[bool] = False
     ):
         self.type = type
         self.required = required
@@ -22,6 +23,7 @@ class Field:
         if validator:
             self._check_validator_signature(validator)
         self._validator = validator
+        self.strict_type = strict_type
 
     def _check_validator_signature(self, func: Callable):
         if not callable(func):
@@ -44,10 +46,18 @@ class Field:
             raise ValidationError(f"Missing required parameter '{key}'")
 
         if value is not None:
+
+            if self.strict_type and type(value) != self.type:
+                raise ValidationError(
+                    f"Incorrect type '{type(value)}' for parameter '{key}', expecting '{self.type}'"
+                )
+
             try:
                 value = self.type(value)
             except (TypeError, ValueError):
-                raise ValidationError(f"Incorrect type '{type(value)}' for parameter '{key}', expecting '{self.type}'")
+                raise ValidationError(
+                    f"Incorrect type '{type(value)}' for parameter '{key}', expecting '{self.type}'"
+                )
 
         if self.choices and value not in self.choices:
             raise ValidationError(f"Invalid choice for parameter '{key}'")

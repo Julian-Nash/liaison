@@ -17,6 +17,18 @@ def test_field_raises_exception_incorrect_type():
         value = field.validate("foo", "bar")
 
 
+def test_field_casts_to_type():
+    field = Field(type=str)
+    value = field.validate("foo", 1)
+    assert value == "1"
+
+
+def test_field_raises_exception_with_strict_type():
+    field = Field(type=int, strict_type=True)
+    with pytest.raises(ValidationError):
+        value = field.validate("foo", "1")
+
+
 def test_field_with_required():
     field = Field(type=str, required=True)
     value = field.validate("foo", "bar")

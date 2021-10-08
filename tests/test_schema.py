@@ -1,5 +1,9 @@
+import pytest
+
 from liaison.schema import Schema
 from liaison.fields import StringField, IntField
+from liaison.decorators import strict_types
+from liaison.exceptions import ValidationError
 
 
 def test_schema_get_fields():
@@ -25,3 +29,25 @@ def test_schema_parse_method():
 
     assert ns.name == "foo"
     assert ns.age == 30
+
+
+def test_schema_with_strict_decorator():
+
+    data = {"name": "foo", "age": "30"}
+
+    class TestSchema(Schema):
+        name = StringField()
+        age = IntField()
+
+    ns = TestSchema.parse(data)
+    assert ns.name == "foo"
+    assert ns.age == 30
+
+    @strict_types
+    class TestSchemaStrict(Schema):
+        name = StringField()
+        age = IntField()
+
+    with pytest.raises(ValidationError):
+        TestSchemaStrict.parse(data)
+
