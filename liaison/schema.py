@@ -6,7 +6,7 @@ from .fields.base import Field
 
 
 class Schema:
-    """ Schema class. Inherit and define your own schemas """
+    """Schema class. Inherit and define your own schemas"""
 
     @classmethod
     def _get_fields(cls) -> List[Tuple[str, Field]]:

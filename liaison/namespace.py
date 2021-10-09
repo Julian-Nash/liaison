@@ -3,10 +3,10 @@ from typing import Optional, Any, Sequence
 
 
 class Namespace(_Namespace):
-    """ Simple namespace object returned when parsing a Schema """
+    """Simple namespace object returned when parsing a Schema"""
 
     def get(self, key, default: Optional[Any] = None) -> Any:
-        """ Get an attribute from the namespace, provide an optional default value """
+        """Get an attribute from the namespace, provide an optional default value"""
         return getattr(self, key, default)
 
     def to_dict(self, exclude: Optional[Sequence] = None) -> dict:
