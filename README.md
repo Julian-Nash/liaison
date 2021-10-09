@@ -86,7 +86,7 @@ class UserSchema(Schema):
 TODO:
 
 - [x] StringField
-  - [] DateTimeField
+  - [x] DateTimeField
 - [x] NumberField
   - [x] IntField
   - [x] FloatField
@@ -97,5 +97,5 @@ TODO:
 - [x] DictField
   - [] Add key type choices & validate
   - [] Add value type choices & validate
-- [] Add regex to StringField
+- [x] Add regex to StringField
 
