@@ -17,4 +17,3 @@ def test_field_raises_validation_error():
     field = DateTimeField(date_format="%d-%m-%Y")
     with pytest.raises(ValidationError):
         value = field.validate("date", "2021-10-09")
-

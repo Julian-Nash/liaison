@@ -17,7 +17,7 @@ class StringField(SizedFieldMixin, Field):
         validator: Optional[Callable] = None,
         min_len: Optional[int] = None,
         max_len: Optional[int] = None,
-        regex: Optional[str] = None
+        regex: Optional[str] = None,
     ):
         super().__init__(
             type=str,
