@@ -38,3 +38,15 @@ def test_field_with_max_len_raises_exception():
     field = StringField(max_len=5)
     with pytest.raises(ValidationError):
         value = field.validate("foo", "barbar")
+
+
+def test_field_with_regex_succeeds():
+    field = StringField(regex="123abc")
+    value = field.validate("foo", "123abc")
+    assert value == "123abc"
+
+
+def test_field_with_regex_raises_validation_error():
+    field = StringField(regex="123abc")
+    with pytest.raises(ValidationError):
+        value = field.validate("foo", "bar")
