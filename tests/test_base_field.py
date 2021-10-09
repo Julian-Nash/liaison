@@ -47,6 +47,12 @@ def test_field_with_default():
     assert value == "DEFAULT"
 
 
+def test_field_with_callable_default():
+    field = Field(type=str, default=lambda: "DEFAULT")
+    value = field.validate("foo", None)
+    assert value == "DEFAULT"
+
+
 def test_field_with_choices():
     field = Field(type=str, choices=["Hello", "World"])
     value = field.validate("foo", "Hello")
@@ -60,7 +66,6 @@ def test_field_with_choices_raises_error():
 
 
 def test_field_with_validator():
-
     def my_validator(field_cls, key, value):  # pragma: no cover
         if value == "FOO":
             raise ValidationError("Value cannot be FOO")
@@ -77,7 +82,6 @@ def test_field_with_incorrect_validator_type():
 
 
 def test_field_with_validator_raises_error():
-
     def my_validator(field_cls, key, value):  # pragma: no cover
         if value == "FOO":
             raise ValidationError("Value cannot be FOO")

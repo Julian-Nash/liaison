@@ -35,7 +35,7 @@ result = UserSchema.parse(data)
 print(result.name, result.email, result.age)  # Bar foo@bar.com 21
 ```
 
-Catching validation errors:
+Handling validation errors:
 
 ```py3
 data = {
@@ -90,12 +90,12 @@ TODO:
 - [x] NumberField
   - [x] IntField
   - [x] FloatField
-- [] BoolField
-- [] ListField
-  - [] SetField
-  - [] Add value type choices & check
-- [] DictField
-  - [] Add key type choices & check
-  - [] Add value type choices & check
+- [x] BoolField
+- [x] ListField
+  - [x] SetField
+  - [] Add value type choices & validate
+- [x] DictField
+  - [] Add key type choices & validate
+  - [] Add value type choices & validate
 - [] Add regex to StringField
 

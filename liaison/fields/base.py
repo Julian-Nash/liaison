@@ -40,16 +40,19 @@ class Field:
 
     def _cast_type(self, key, value: Any):
 
+        if isinstance(value, self.type):
+            return value
+
         if self.strict_type and not isinstance(value, self.type):
             raise ValidationError(
-                f"Incorrect type '{type(value)}' for parameter '{key}', expecting '{self.type}'"
+                f"Incorrect type '{type(value)}' for parameter '{key}', expecting '{str(self.type)}'"
             )
 
         try:
             value = self.type(value)
         except (TypeError, ValueError):
             raise ValidationError(
-                f"Incorrect type '{type(value)}' for parameter '{key}', expecting '{self.type}'"
+                f"Incorrect type '{type(value)}' for parameter '{key}', expecting '{str(self.type)}'"
             )
         return value
 
@@ -69,5 +72,7 @@ class Field:
             raise ValidationError(f"Invalid choice for parameter '{key}'")
 
         if value is None and self.default:
+            if callable(self.default):
+                return self.default()
             return self.default
         return value

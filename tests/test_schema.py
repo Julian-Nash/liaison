@@ -7,7 +7,6 @@ from liaison.exceptions import ValidationError
 
 
 def test_schema_get_fields():
-
     class TestSchema(Schema):
         name = StringField()
         age = IntField()
@@ -20,7 +19,6 @@ def test_schema_get_fields():
 
 
 def test_schema_parse_method():
-
     class TestSchema(Schema):
         name = StringField()
         age = IntField()
@@ -50,4 +48,3 @@ def test_schema_with_strict_decorator():
 
     with pytest.raises(ValidationError):
         TestSchemaStrict.parse(data)
-

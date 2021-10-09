@@ -1,31 +1,34 @@
 from typing import Optional, Any, Sequence, Callable
 
 from .base import Field
+from .mixins import SizedFieldMixin
 from liaison.exceptions import ValidationError
 
 
-class BoolField(Field):
-    """Field for declaring booleans"""
-
+class DictField(SizedFieldMixin, Field):
     def __init__(
         self,
         required: Optional[bool] = False,
         default: Optional[Any] = None,
         choices: Optional[Sequence[str]] = None,
         validator: Optional[Callable] = None,
+        min_len: Optional[int] = None,
+        max_len: Optional[int] = None,
     ):
         super().__init__(
-            type=bool,
+            type=dict,
             required=required,
             default=default,
             choices=choices,
             validator=validator,
+            min_len=min_len,
+            max_len=max_len,
         )
 
     def _cast_type(self, key, value):
-        if not isinstance(value, bool):
+        if not isinstance(value, dict):
             raise ValidationError(
-                f"Incorrect type '{type(value)}' for parameter '{key}', expecting a boolean"
+                f"Incorrect type '{type(value)}' for parameter '{key}', expecting a dict"
             )
         return super()._cast_type(key, value)
 
