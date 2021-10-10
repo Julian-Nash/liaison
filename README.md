@@ -1,6 +1,6 @@
 # Liaison
 
-A Python library for defining schemas, parsing and validating payloads.
+A zero dependency Python library for defining schemas, parsing and validating payloads.
 
 [![CI](https://github.com/Julian-Nash/liaison/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/Julian-Nash/liaison/actions/workflows/main.yml)
 
