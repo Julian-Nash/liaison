@@ -24,13 +24,3 @@ class DictField(SizedFieldMixin, Field):
             min_len=min_len,
             max_len=max_len,
         )
-
-    def _cast_type(self, key, value):
-        if not isinstance(value, dict):
-            raise ValidationError(
-                f"Incorrect type '{type(value)}' for parameter '{key}', expecting a dict"
-            )
-        return super()._cast_type(key, value)
-
-    def validate(self, key, value):
-        return super().validate(key, value)

@@ -84,6 +84,3 @@ class SetField(SequenceField):
 
     def _cast_type(self, key, value):
         return super()._cast_type(key, set(value))
-
-    def validate(self, key, value):
-        return super().validate(key, value)

@@ -79,6 +79,3 @@ class FloatField(NumberField):
             min_val=min_val,
             max_val=max_val,
         )
-
-    def validate(self, key, value):
-        return super().validate(key, value)

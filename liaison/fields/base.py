@@ -27,7 +27,7 @@ class Field:
 
     def _check_validator_signature(self, func: Callable):
         if not callable(func):
-            raise TypeError(f"validators must be callable, not '{type(func)}'")
+            raise TypeError(f"validators must be callable, not '{type(func).__name__}'")
         if len(signature(func).parameters) != 3:
             raise SchemaException(
                 f"validator method signature must match (self, key, value)"
@@ -45,14 +45,14 @@ class Field:
 
         if self.strict_type and not isinstance(value, self.type):
             raise ValidationError(
-                f"Incorrect type '{type(value)}' for '{key}', expecting '{str(self.type)}'"
+                f"Incorrect type '{type(value).__name__}' for '{key}', expecting '{self.type.__name__}'"
             )
 
         try:
             value = self.type(value)
         except (TypeError, ValueError):
             raise ValidationError(
-                f"Invalid type '{type(value)}' for '{key}', expecting '{str(self.type)}'"
+                f"Invalid type '{type(value).__name__}' for '{key}', expecting '{self.type.__name__}'"
             )
         return value
 
@@ -69,10 +69,11 @@ class Field:
             value = self._cast_type(key, value)
 
         if self.choices and value not in self.choices:
-            raise ValidationError(f"Invalid choice for '{key}'")
+            raise ValidationError(f"Invalid choice '{value}' for '{key}'")
 
         if value is None and self.default:
             if callable(self.default):
                 return self.default()
             return self.default
+
         return value

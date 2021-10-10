@@ -1,4 +1,4 @@
-from .string import StringField
+from .string import StringField, UUIDField
 from .number import NumberField, IntField, FloatField
 from .bool import BoolField
 from .sequence import ListField, SetField

@@ -33,6 +33,3 @@ class DateTimeField(Field):
                 f"Invalid value for '{key}', must match format '{self.date_format}'"
             )
         return value
-
-    def validate(self, key, value):
-        return super().validate(key, value)

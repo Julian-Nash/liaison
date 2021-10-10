@@ -25,9 +25,6 @@ class BoolField(Field):
     def _cast_type(self, key, value):
         if not isinstance(value, bool):
             raise ValidationError(
-                f"Incorrect type '{type(value)}' for parameter '{key}', expecting a boolean"
+                f"Incorrect type '{type(value).__name__}' for parameter '{key}', expecting a boolean"
             )
         return super()._cast_type(key, value)
-
-    def validate(self, key, value):
-        return super().validate(key, value)
