@@ -17,6 +17,7 @@ class DictField(SizedFieldMixin, Field):
     ):
         super().__init__(
             type=dict,
+            input_types=(dict,),
             required=required,
             default=default,
             choices=choices,

@@ -1,4 +1,4 @@
-from typing import Any, Optional, Callable, Sequence
+from typing import Any, Optional, Callable, Sequence, Tuple
 from inspect import signature
 
 from liaison.exceptions import SchemaException, ValidationError
@@ -10,6 +10,7 @@ class Field:
     def __init__(
         self,
         type: type,
+        input_types: Tuple[type],
         required: Optional[bool] = False,
         default: Optional[Any] = None,
         choices: Optional[Sequence] = None,
@@ -24,10 +25,11 @@ class Field:
             self._check_validator_signature(validator)
         self._validator = validator
         self.strict_type = strict_type
+        self.input_types = input_types
 
     def _check_validator_signature(self, func: Callable):
         if not callable(func):
-            raise TypeError(f"validators must be callable, not '{type(func).__name__}'")
+            raise TypeError(f"validators must be callable, not '{type(func)}'")
         if len(signature(func).parameters) != 3:
             raise SchemaException(
                 f"validator method signature must match (self, key, value)"
@@ -42,6 +44,11 @@ class Field:
 
         if isinstance(value, self.type):
             return value
+
+        if type(value) not in self.input_types:
+            raise ValidationError(
+                f"Incorrect type '{type(value).__name__}' for '{key}', expecting '{self.type.__name__}'"
+            )
 
         if self.strict_type and not isinstance(value, self.type):
             raise ValidationError(

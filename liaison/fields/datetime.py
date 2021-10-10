@@ -18,6 +18,7 @@ class DateTimeField(Field):
     ):
         super().__init__(
             type=datetime,
+            input_types=(str,),
             required=required,
             default=default,
             choices=choices,

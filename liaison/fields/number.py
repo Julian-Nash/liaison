@@ -1,4 +1,4 @@
-from typing import Optional, Any, Sequence, Callable, Union, Type
+from typing import Optional, Any, Sequence, Callable
 from numbers import Number
 
 from .base import Field
@@ -10,7 +10,7 @@ class NumberField(NumericFieldMixin, Field):
 
     def __init__(
         self,
-        type: Type[Union[int, float]],
+        type: type,
         required: Optional[bool] = False,
         default: Optional[Any] = None,
         choices: Optional[Sequence[str]] = None,
@@ -20,6 +20,7 @@ class NumberField(NumericFieldMixin, Field):
     ):
         super().__init__(
             type=type,
+            input_types=(int, float, str),
             required=required,
             default=default,
             choices=choices,
@@ -27,9 +28,6 @@ class NumberField(NumericFieldMixin, Field):
             min_val=min_val,
             max_val=max_val,
         )
-
-    def validate(self, key, value):
-        return super().validate(key, value)
 
 
 class IntField(NumberField):
@@ -53,9 +51,6 @@ class IntField(NumberField):
             min_val=min_val,
             max_val=max_val,
         )
-
-    def validate(self, key, value):
-        return super().validate(key, value)
 
 
 class FloatField(NumberField):

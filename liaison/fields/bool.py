@@ -16,15 +16,9 @@ class BoolField(Field):
     ):
         super().__init__(
             type=bool,
+            input_types=(bool,),
             required=required,
             default=default,
             choices=choices,
             validator=validator,
         )
-
-    def _cast_type(self, key, value):
-        if not isinstance(value, bool):
-            raise ValidationError(
-                f"Incorrect type '{type(value).__name__}' for parameter '{key}', expecting a boolean"
-            )
-        return super()._cast_type(key, value)

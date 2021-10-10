@@ -22,6 +22,7 @@ class StringField(SizedFieldMixin, Field):
     ):
         super().__init__(
             type=str,
+            input_types=(str, int, float),
             required=required,
             default=default,
             choices=choices,
@@ -55,6 +56,7 @@ class UUIDField(StringField):
             choices=choices,
             validator=validator,
         )
+        self.input_types = (str,)
 
     def validate(self, key, value):
         if value is not None:

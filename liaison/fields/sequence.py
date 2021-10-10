@@ -1,4 +1,4 @@
-from typing import Optional, Any, Sequence, Callable
+from typing import Optional, Any, Sequence, Callable, Union
 
 from .base import Field
 from .mixins import SizedFieldMixin
@@ -8,16 +8,17 @@ from liaison.exceptions import ValidationError
 class SequenceField(SizedFieldMixin, Field):
     def __init__(
         self,
+        type: type,
         required: Optional[bool] = False,
         default: Optional[Any] = None,
         choices: Optional[Sequence[str]] = None,
         validator: Optional[Callable] = None,
         min_len: Optional[int] = None,
         max_len: Optional[int] = None,
-        _type: type = list,
     ):
         super().__init__(
-            type=_type,
+            type=type,
+            input_types=(list,),
             required=required,
             default=default,
             choices=choices,
@@ -25,16 +26,6 @@ class SequenceField(SizedFieldMixin, Field):
             min_len=min_len,
             max_len=max_len,
         )
-
-    def _cast_type(self, key, value):
-        if not isinstance(value, (list, set)):
-            raise ValidationError(
-                f"Incorrect type '{type(value)}' for parameter '{key}', expecting a list"
-            )
-        return super()._cast_type(key, value)
-
-    def validate(self, key, value):
-        return super().validate(key, value)
 
 
 class ListField(SequenceField):
@@ -50,13 +41,13 @@ class ListField(SequenceField):
         max_len: Optional[int] = None,
     ):
         super().__init__(
+            type=list,
             required=required,
             default=default,
             choices=choices,
             validator=validator,
             min_len=min_len,
             max_len=max_len,
-            _type=list,
         )
 
 
@@ -73,13 +64,13 @@ class SetField(SequenceField):
         max_len: Optional[int] = None,
     ):
         super().__init__(
+            type=set,
             required=required,
             default=default,
             choices=choices,
             validator=validator,
             min_len=min_len,
             max_len=max_len,
-            _type=set,
         )
 
     def _cast_type(self, key, value):
