@@ -156,7 +156,7 @@ Use fields to define your schema. By default, all fields accept the following co
 | `min_len` | `int` | The minimum length | `None` |
 | `max_len` | `int` | The maximum length | `None` |
 
-### `DateTimeField` - Defining dictionaries
+### `DateTimeField` - Defining datetimes
 
 > Note - `DateTimeField` fields will return `datetime` objects
 
@@ -164,6 +164,6 @@ Use fields to define your schema. By default, all fields accept the following co
 | --------- | ---- | ----------- |
 | `date_format` | `str` | The date format |
 
-### `UUIDField` - Defining UUID strings
+### `UUIDField` - Defining UUIDs
 
 > Note - `UUIDField` fields will NOT return a `UUID` obejct, it will return a string.
