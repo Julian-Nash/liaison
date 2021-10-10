@@ -22,6 +22,12 @@ def test_field_with_min_len():
     assert value == "barbar"
 
 
+def test_field_with_min_len_with_int():
+    field = StringField(min_len=5)
+    with pytest.raises(ValidationError):
+        value = field.validate("foo", 1)
+
+
 def test_field_with_min_len_raises_exception():
     field = StringField(min_len=5)
     with pytest.raises(ValidationError):

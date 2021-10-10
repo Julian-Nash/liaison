@@ -5,7 +5,7 @@ from typing import Optional, Any, Sequence
 class Namespace(_Namespace):
     """Simple namespace object returned when parsing a Schema"""
 
-    def get(self, key, default: Optional[Any] = None) -> Any:
+    def get(self, key: str, default: Optional[Any] = None) -> Any:
         """Get an attribute from the namespace, provide an optional default value"""
         return getattr(self, key, default)
 

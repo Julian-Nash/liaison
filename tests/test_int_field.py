@@ -16,6 +16,18 @@ def test_field_with_min_val():
     assert value == 6
 
 
+def test_field_with_min_val_no_value():
+    field = IntField(min_val=5)
+    value = field.validate("foo", None)
+    assert value is None
+
+
+def test_field_with_min_val_empty_String():
+    field = IntField(min_val=5)
+    with pytest.raises(ValidationError):
+        value = field.validate("foo", "")
+
+
 def test_field_with_min_len_raises_exception():
     field = IntField(min_val=5)
     with pytest.raises(ValidationError):

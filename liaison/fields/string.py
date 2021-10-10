@@ -31,6 +31,7 @@ class StringField(SizedFieldMixin, Field):
         self.regex = re.compile(regex) if regex else None
 
     def validate(self, key, value):
+
         if self.regex:
             if not self.regex.match(value):
                 raise ValidationError(
