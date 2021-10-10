@@ -65,7 +65,7 @@ except ValidationError as e:
     print(e)  # Value for 'age' must be at least 18
 ```
 
-Defining custom validators via the fields `validator` decorator:
+Defining custom field validators via the `<field>.validator` decorator:
 
 ```py3
 class UserSchema(Schema):
@@ -167,3 +167,101 @@ Use fields to define your schema. By default, all fields accept the following co
 ### `UUIDField` - Defining UUIDs
 
 > Note - `UUIDField` fields will NOT return a `UUID` obejct, it will return a string.
+
+## Namespace
+
+Calling the `parse` method on a `Schema` object will return a `Namespace` object, holding the parsed values as 
+attributes.
+
+```py3
+from liaison import Schema
+from liaison.fields import StringField, IntField, BoolField, FloatField, UUIDField
+
+
+class RESTBaseSchema(Schema):
+
+    offset = IntField(min_val=0, default=0)
+    limit = IntField(max_val=100)
+    search = StringField()
+
+
+class ProductsRESTSchema(RESTBaseSchema):
+
+    product_id = UUIDField()
+    category = StringField()
+    price = FloatField()
+    in_stock = BoolField()
+
+
+payload = {
+    "offset": 10,
+    "category": "shoes",
+    "in_stock": True
+}
+
+result = ProductsRESTSchema.parse(payload)  
+
+print(result.offset, result.limit, result.search, result.category, result.in_stock)
+# 10 None None shoes True
+```
+
+`Namespace` objects have a `to_dict` method, returning a dictionary of the `Namespace` attributes and values:
+
+```py3
+print(result.to_dict())
+# {'category': 'shoes', 'in_stock': True, 'limit': None, 'offset': 10, 'price': None, 'product_id': None, 'search': None}
+```
+
+An optional `exclude` parameter can be included to exclude certain attributes:
+
+```py3
+print(result.to_dict(exclude=("offset", "limit", "search")))
+# {'category': 'shoes', 'in_stock': True, 'price': None, 'product_id': None}
+```
+
+## Defining custom fields
+
+Create your own fields and validation logic by inheriting from any of the field classes and implementing a 
+`validate` method.
+
+> Note - The `validate` method must accept 2 params (key, value)
+
+```py3
+from liaison import Schema, ValidationError
+from liaison.fields import StringField
+
+
+class PasswordField(StringField):
+
+    def validate(self, key, value):
+        value = super().validate(key, value)
+        if len(value) < 9:
+            raise ValidationError("Value for 'password' must be at least 9 characters in length")
+        # etc...
+        return value
+
+
+class UserSchema(Schema):
+
+    username = StringField(required=True)
+    password = PasswordField()
+
+
+payload = {
+    "username": "FooBar",
+    "password": "password"
+}
+
+try:
+    result = UserSchema.parse(payload)
+except ValidationError as e:
+    print(e)  # Value for 'password' must be at least 9 characters in length
+    
+payload = {
+    "username": "FooBar",
+    "password": "password12345!"
+}
+
+result = UserSchema.parse(payload)
+print(result.password)  # password12345!
+```
