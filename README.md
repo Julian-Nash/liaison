@@ -15,6 +15,12 @@ Goals:
 - Speed
 - 100% test coverage
 
+Installation:
+
+```shell
+pip install liaison
+```
+
 Example:
 
 ```py3
@@ -136,7 +142,7 @@ Use fields to define your schema. By default, all fields accept the following co
 
 ### `SetField` - Defining sets
 
-`SetField` shares the same behaviour as `ListField`, returning a `set`.
+> Note - `SetField` shares the same behaviour as `ListField`, returning a `set`.
 
 | Parameter | Type | Description | Default |
 | --------- | ---- | ----------- | ------- |
@@ -152,6 +158,12 @@ Use fields to define your schema. By default, all fields accept the following co
 
 ### `DateTimeField` - Defining dictionaries
 
+> Note - `DateTimeField` fields will return `datetime` objects
+
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
 | `date_format` | `str` | The date format |
+
+### `UUIDField` - Defining UUID strings
+
+> Note - `UUIDField` fields will NOT return a `UUID` obejct, it will return a string.
